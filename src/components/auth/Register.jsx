@@ -4,7 +4,7 @@ import { useForm } from "@mantine/form";
 import { Loader } from "@mantine/core";
 
 const Register = () => {
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
   const [profile, setProfile] = useState(null);
   const form = useForm({
     initialValues: {
@@ -60,10 +60,6 @@ const Register = () => {
         setLoading(true);
         const { values, errors } = form;
 
-        // if (values.image) {
-        //   const formData = new FormData();
-        //   formData.append("image", values.image);
-        // }
         console.log(values);
         console.log(profile);
         // const response = await dispatch(
