@@ -4,14 +4,14 @@ import { useForm } from "@mantine/form";
 import { Loader } from "@mantine/core";
 
 const Register = () => {
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+  const [profile, setProfile] = useState(null);
   const form = useForm({
     initialValues: {
       firstName: "",
       lastName: "",
       email: "",
       password: "",
-      image: null,
       // confirmPassword: "",
     },
     validateInputOnBlur: true,
@@ -35,22 +35,37 @@ const Register = () => {
     },
   });
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    form.set("image", file);
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file.size > 200 * 1024) {
+      // Discard Pic if it's larger than 1 MB
+      alert("Pic size is too large. Maximum size is 200 KB.");
+      e.target.value = null; // Clear input value
+      setProfile(null); // Remove Pic
+      return;
+    } else {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setProfile(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const registerHandler = async () => {
     try {
       if (form.isValid) {
         setLoading(true);
-        const { values, errors } = form.values();
+        const { values, errors } = form;
 
-        if (values.image) {
-          const formData = new FormData();
-          formData.append("image", values.image);
-        }
+        // if (values.image) {
+        //   const formData = new FormData();
+        //   formData.append("image", values.image);
+        // }
         console.log(values);
+        console.log(profile);
         // const response = await dispatch(
         //   signup(
         //     values.firstName,
@@ -217,10 +232,17 @@ const Register = () => {
                   disabled={isLoading}
                   type="submit"
                   className="bg-primary text-white font-bold py-2 px-4 w-full rounded hover:bg-[#8251c9]"
+                  style={{
+                    opacity: isLoading ? 0.4 : 1,
+                    cursor: isLoading ? "not-allowed" : "pointer",
+                  }}
                 >
                   {isLoading ? (
-                    // <Spinner className="flex items-center justify-center mx-auto" />
-                    <Loader color="violet" size="sm" />
+                    <Loader
+                      color="rgba(180, 191, 174, 0.58)"
+                      size="sm"
+                      className="flex items-center justify-center mx-auto"
+                    />
                   ) : (
                     "Create Account"
                   )}
