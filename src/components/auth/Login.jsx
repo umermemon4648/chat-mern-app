@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { Loader } from "@mantine/core";
+import { useDispatch, useSelector } from "react-redux";
+import { clearErrors, login } from "../../redux/actions/authActions";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);
 
   const form = useForm({
@@ -26,31 +29,23 @@ const Login = () => {
         const { values, errors } = form;
 
         console.log(values);
-        // const response = await dispatch(
-        //   login(
-        //     values.email,
-        //     values.password
-        //   )
-        // );
-        // if (response) {
-        //   const res = await dispatch(login(values.email, values.password));
-        //   if (res) {
-        //     setLoading(false);
-        //     navigate("/");
-        //   }
-        // }
+        const res = await dispatch(login(values.email, values.password));
+        if (res) {
+          setLoading(false);
+          navigate("/");
+        }
       }
     } catch (error) {
       console.error(error.message);
     }
   };
 
-  // useEffect(() => {
-  //   if (error) {
-  //     dispatch(clearErrors());
-  //     setLoading(false);
-  //   }
-  // }, [error, dispatch]);
+  useEffect(() => {
+    if (error) {
+      dispatch(clearErrors());
+      setLoading(false);
+    }
+  }, [error, dispatch]);
 
   return (
     <>

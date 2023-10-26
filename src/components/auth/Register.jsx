@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { Loader } from "@mantine/core";
+import { useDispatch, useSelector } from "react-redux";
+import { clearErrors, signup } from "../../redux/actions/authActions";
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const { error } = useSelector((state) => state.auth);
   const [isLoading, setLoading] = useState(false);
   const [profile, setProfile] = useState(null);
   const form = useForm({
@@ -62,33 +66,31 @@ const Register = () => {
 
         console.log(values);
         console.log(profile);
-        // const response = await dispatch(
-        //   signup(
-        //     values.firstName,
-        //     values.lastName,
-        //     values.email,
-        //     values.password
-        //   )
-        // );
-        // if (response) {
-        //   const res = await dispatch(login(values.email, values.password));
-        //   if (res) {
-        //     setLoading(false);
-        //     navigate("/");
-        //   }
-        // }
+        const response = await dispatch(
+          signup(
+            values.firstName,
+            values.lastName,
+            values.email,
+            values.password,
+            profile
+          )
+        );
+        if (response) {
+          setLoading(false);
+          navigate("/");
+        }
       }
     } catch (error) {
       console.error("Login error:", error.message);
     }
   };
 
-  // useEffect(() => {
-  //   if (error) {
-  //     dispatch(clearErrors());
-  //     setLoading(false);
-  //   }
-  // }, [error, dispatch]);
+  useEffect(() => {
+    if (error) {
+      dispatch(clearErrors());
+      setLoading(false);
+    }
+  }, [error, dispatch]);
 
   return (
     <>

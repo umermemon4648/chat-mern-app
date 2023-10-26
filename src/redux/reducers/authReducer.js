@@ -44,7 +44,7 @@ export const authReducer = (
         loading: false,
         isAuthenticated: true,
         user: {
-          token: action.payload.token.access_token,
+          token: action.payload.token.jwtToken,
           userData: action.payload.user,
         },
       };
@@ -65,7 +65,7 @@ export const authReducer = (
         ...state,
         loading: false,
         user: {
-          token: state?.user?.token?.access_token,
+          token: state?.user?.token?.jwtToken,
           userData: action?.payload,
         },
       };
