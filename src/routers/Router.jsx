@@ -16,15 +16,15 @@ const Router = () => {
       {/* Default Layout routes */}
       <Route path="/" element={<DefaultLayout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/chat" element={<Chat />} />
-
-        {/* Auth routes */}
-        <Route path="/auth" element={<AuthLayout />}>
-          <Route path="/auth/login" element={<Login />} />
-          <Route path="/auth/register" element={<Register />} />
-        </Route>
       </Route>
 
+      {/* Auth routes */}
+      <Route path="/auth" element={<AuthLayout />}>
+        <Route path="/auth/login" element={<Login />} />
+        <Route path="/auth/register" element={<Register />} />
+      </Route>
+
+      <Route path="/chat" element={<Chat />} />
       {/* Not found page */}
       <Route path="*" element={<NotFound />} />
     </Routes>

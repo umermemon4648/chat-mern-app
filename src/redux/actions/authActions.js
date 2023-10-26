@@ -1,10 +1,11 @@
 import { authConstants } from "../constants/authConstants";
-import { attachToken, formAxios, custAxios } from "../../configs/axiosConfig";
+import custAxios, { attachToken } from "../../configs/axiosConfig";
 import {
   successMessage,
   errorMessage,
   warningMessage,
 } from "../../services/helpers";
+import formAxios from "../../configs/axiosConfig";
 
 export const signup =
   (firstName, lastName, email, password, profilePic) => async (dispatch) => {
@@ -12,7 +13,7 @@ export const signup =
       type: authConstants.SIGNUP_REQUEST,
     });
     try {
-      const res = await custAxios.post("/auth/register", {
+      const res = await formAxios.post("/auth/register", {
         firstName,
         lastName,
         email,

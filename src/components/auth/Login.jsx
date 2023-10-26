@@ -7,7 +7,9 @@ import { clearErrors, login } from "../../redux/actions/authActions";
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(false);
+  const { error } = useSelector((state) => state.auth);
 
   const form = useForm({
     initialValues: {

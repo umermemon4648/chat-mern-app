@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, signup } from "../../redux/actions/authActions";
 
 const Register = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { error } = useSelector((state) => state.auth);
   const [isLoading, setLoading] = useState(false);
@@ -94,7 +95,7 @@ const Register = () => {
 
   return (
     <>
-      <div className="py-4 mt-6 mb-8">
+      <div className="py-4 mt-6 mb-8 text-black">
         <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
           <div
             className="hidden lg:block lg:w-1/2 bg-cover"

@@ -5,17 +5,20 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  color: black !important;
 }
 
 .sender-message,
 .receiver-message {
   min-width: 50%;
 }
+
+/* @import "styles/pages/auth.css"; */
+
+/* components css files */
+/* @import "styles/components/login.css";
+@import "styles/components/register.css"; */
+
 /* Imported stylesheets */
 
 /* pages css files */
-@import "styles/pages/auth.css";
-
-/* components css files */
-@import "styles/components/login.css";
-@import "styles/components/register.css";

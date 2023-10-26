@@ -1,1 +1,10 @@
-{"version":3,"sources":["auth.scss","auth.css"],"names":[],"mappings":"AAAA;EACI,YAAA;ACCJ","file":"auth.css"}
+{
+  "version": 3,
+  "sources": [
+    "auth.scss",
+    "auth.css"
+  ],
+  "names": [],
+  "mappings": "AAAA;EACI,YAAA;ACCJ",
+  "file": "auth.css"
+}
