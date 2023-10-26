@@ -1,10 +1,87 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useForm } from "@mantine/form";
+import { Loader } from "@mantine/core";
 
 const Register = () => {
+  const [isLoading, setLoading] = useState(false);
+  const form = useForm({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      image: null,
+      // confirmPassword: "",
+    },
+    validateInputOnBlur: true,
+    validateInputOnChange: [
+      "firstName",
+      "lastName",
+      "email",
+      "password",
+      // "confirmPassword",
+    ],
+    validate: {
+      firstName: (value) =>
+        value.length < 3 ? "First name should be at least 3 characters" : null,
+      lastName: (value) =>
+        value.length < 3 ? "Last name should be at least 3 characters" : null,
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+      password: (value) =>
+        value.length < 3 ? "Password is should be at least 3 characters" : null,
+      // confirmPassword: (value, values) =>
+      //   value === values.password ? null : "Passwords do not match",
+    },
+  });
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    form.set("image", file);
+  };
+
+  const registerHandler = async () => {
+    try {
+      if (form.isValid) {
+        setLoading(true);
+        const { values, errors } = form.values();
+
+        if (values.image) {
+          const formData = new FormData();
+          formData.append("image", values.image);
+        }
+        console.log(values);
+        // const response = await dispatch(
+        //   signup(
+        //     values.firstName,
+        //     values.lastName,
+        //     values.email,
+        //     values.password
+        //   )
+        // );
+        // if (response) {
+        //   const res = await dispatch(login(values.email, values.password));
+        //   if (res) {
+        //     setLoading(false);
+        //     navigate("/");
+        //   }
+        // }
+      }
+    } catch (error) {
+      console.error("Login error:", error.message);
+    }
+  };
+
+  // useEffect(() => {
+  //   if (error) {
+  //     dispatch(clearErrors());
+  //     setLoading(false);
+  //   }
+  // }, [error, dispatch]);
+
   return (
     <>
-      <div className="py-6 mt-4 mb-8">
+      <div className="py-4 mt-2 mb-8">
         <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
           <div
             className="hidden lg:block lg:w-1/2 bg-cover"
@@ -13,7 +90,7 @@ const Register = () => {
                 'url("https://images.unsplash.com/photo-1546514714-df0ccc50d7bf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=667&q=80")',
             }}
           ></div>
-          <div className="w-full p-8 lg:w-1/2">
+          <div className="w-full px-8 py-2 lg:w-1/2">
             <h2 className="text-2xl font-semibold text-gray-700 text-center my-2">
               Sign Up
             </h2>
@@ -22,7 +99,7 @@ const Register = () => {
             </p>
             {/* <a
               href="#"
-              className="flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100"
+              className="flex items-center justify-center mt-3 text-white rounded-lg shadow-md hover:bg-gray-100"
             >
               <div className="px-4 py-3">
                 <svg className="h-6 w-6" viewBox="0 0 40 40">
@@ -48,7 +125,7 @@ const Register = () => {
                 Sign in with Google
               </h1>
             </a> */}
-            {/* <div className="mt-4 flex items-center justify-between">
+            {/* <div className="mt-3 flex items-center justify-between">
               <span className="border-b w-1/5 lg:w-1/4"></span>
               <a
                 href="#"
@@ -58,48 +135,100 @@ const Register = () => {
               </a>
               <span className="border-b w-1/5 lg:w-1/4"></span>
             </div> */}
-            <div className="mt-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                First Name
-              </label>
-              <input
-                className="bg-[#F9FAFB] text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
-                type="email"
-              />
-            </div>
-            <div className="mt-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Last Name
-              </label>
-              <input
-                className="bg-[#F9FAFB] text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
-                type="email"
-              />
-            </div>
-            <div className="mt-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Email Address
-              </label>
-              <input
-                className="bg-[#F9FAFB] text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
-                type="email"
-              />
-            </div>
-            <div className="mt-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Password
-              </label>
-              <input
-                className="bg-[#F9FAFB] text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
-                type="password"
-              />
-            </div>
-            <div className="mt-8">
-              <button className="bg-primary text-white font-bold py-2 px-4 w-full rounded hover:bg-[#8251c9]">
-                Create Account
-              </button>
-            </div>
-            <div className="mt-4 flex items-center justify-between">
+            <form onSubmit={form.onSubmit(registerHandler)}>
+              <div className="mt-3">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  First Name
+                </label>
+                <input
+                  {...form.getInputProps("firstName")}
+                  autoFocus
+                  className="bg-[#F9FAFB] text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                  type="text"
+                />
+                {form.errors.firstName && (
+                  <span className="text-sm" style={{ color: "red" }}>
+                    {form.errors.firstName}
+                  </span>
+                )}
+              </div>
+              <div className="mt-3">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Last Name
+                </label>
+                <input
+                  {...form.getInputProps("lastName")}
+                  className="bg-[#F9FAFB] text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                  type="text"
+                />
+                {form.errors.lastName && (
+                  <span className="text-sm" style={{ color: "red" }}>
+                    {form.errors.lastName}
+                  </span>
+                )}
+              </div>
+              <div className="mt-3">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Email Address
+                </label>
+                <input
+                  {...form.getInputProps("email")}
+                  className="bg-[#F9FAFB] text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                  type="email"
+                />
+                {form.errors.email && (
+                  <span className="text-sm" style={{ color: "red" }}>
+                    {form.errors.email}
+                  </span>
+                )}
+              </div>
+              <div className="mt-3">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Password
+                </label>
+                <input
+                  {...form.getInputProps("password")}
+                  className="bg-[#F9FAFB] text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                  type="password"
+                />
+                {form.errors.password && (
+                  <span className="text-sm" style={{ color: "red" }}>
+                    {form.errors.password}
+                  </span>
+                )}
+              </div>
+              <div className="mt-3">
+                <label
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  for="file_input"
+                >
+                  Upload profile
+                </label>
+                <input
+                  onChange={handleImageChange}
+                  class="py-2 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                  id="file_input"
+                  type="file"
+                  accept="image/*"
+                />
+              </div>
+              <div className="mt-8">
+                <button
+                  disabled={isLoading}
+                  type="submit"
+                  className="bg-primary text-white font-bold py-2 px-4 w-full rounded hover:bg-[#8251c9]"
+                >
+                  {isLoading ? (
+                    // <Spinner className="flex items-center justify-center mx-auto" />
+                    <Loader color="violet" size="sm" />
+                  ) : (
+                    "Create Account"
+                  )}
+                </button>
+              </div>
+            </form>
+
+            <div className="mt-3 flex items-center justify-between">
               <span className="border-b w-1/5 md:w-1/4"></span>
 
               <Link

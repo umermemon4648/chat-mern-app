@@ -73,12 +73,13 @@ const Login = () => {
                 className="bg-[#F9FAFB] text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
                 type="password"
               />
-              <div className="flex justify-between">
-                <a href="#" className="text-xs text-gray-500">
+              <div className="flex justify-between w-full my-1">
+                <a href="#" className="text-xs text-gray-500 ml-auto">
                   Forget Password?
                 </a>
               </div>
             </div>
+
             <div className="mt-8">
               <button className="bg-primary text-white font-bold py-2 px-4 w-full rounded hover:bg-[#8251c9]">
                 Sign In
