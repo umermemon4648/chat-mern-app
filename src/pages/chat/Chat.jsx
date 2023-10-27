@@ -1,4 +1,5 @@
-import React, { Fragment } from "react";
+import React, { useState } from "react";
+import Picker from "emoji-picker-react";
 import { Avatar, Button } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
@@ -73,6 +74,13 @@ const chatlist = [
 ];
 
 const Chat = () => {
+  const [chosenEmoji, setChosenEmoji] = useState("");
+  const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false);
+
+  const onEmojiClick = (e) => {
+    setChosenEmoji((prev) => prev + e.emoji);
+  };
+  console.log(chosenEmoji.length);
   return (
     <>
       {/* f1f1f1 */}
@@ -174,9 +182,31 @@ const Chat = () => {
               {/* <div className="w-[80%] mx-auto my-2 rounded-full flex space-x-4"> */}
               <div className="w-[80%] mx-auto my-2 rounded-full flex">
                 <div className="w-full items-center flex justify-center h-[3rem] bg-[#f1f1f1]  rounded-full text-base space-x-4 ">
-                  <FaSmile className="cursor-pointer fill-gray-400 text-2xl mx-4" />
+                  <div className="relative">
+                    <FaSmile
+                      onClick={() => setEmojiPickerOpen((prev) => !prev)}
+                      className="cursor-pointer fill-gray-400 text-2xl mx-4"
+                    />
+                    {isEmojiPickerOpen && (
+                      <div
+                        style={{
+                          width: "100%",
+                          position: "absolute",
+                          bottom: "35px",
+                          left: "0",
+                        }}
+                      >
+                        <Picker
+                          className="w-full border-4"
+                          onEmojiClick={(e) => onEmojiClick(e)}
+                        />
+                      </div>
+                    )}
+                  </div>
 
                   <input
+                    value={chosenEmoji}
+                    onChange={(e) => setChosenEmoji(e.target.value)}
                     type="search"
                     id="default-search"
                     className="text-gray-500 flex-1 h-full px-2 rounded-full focus:outline-none bg-[#f1f1f1] "

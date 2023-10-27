@@ -16,12 +16,12 @@ const Router = () => {
       {/* Default Layout routes */}
       <Route path="/" element={<DefaultLayout />}>
         <Route path="/" element={<Home />} />
-      </Route>
 
-      {/* Auth routes */}
-      <Route path="/auth" element={<AuthLayout />}>
-        <Route path="/auth/login" element={<Login />} />
-        <Route path="/auth/register" element={<Register />} />
+        {/* Auth routes */}
+        <Route path="/auth" element={<AuthLayout />}>
+          <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/register" element={<Register />} />
+        </Route>
       </Route>
 
       <Route path="/chat" element={<Chat />} />
